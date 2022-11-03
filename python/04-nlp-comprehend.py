@@ -22,17 +22,17 @@ text = ""
 for item in response["Blocks"]:
     if item["BlockType"] == "LINE":
         print ('\033[94m' +  item["Text"] + '\033[0m')
-        text = text + " " + item["Text"]
+        text = f"{text} " + item["Text"]
 
 # Amazon Comprehend client
 comprehend = boto3.client('comprehend')
 
 # Detect sentiment
 sentiment =  comprehend.detect_sentiment(LanguageCode="en", Text=text)
-print ("\nSentiment\n========\n{}".format(sentiment.get('Sentiment')))
+print(f"\nSentiment\n========\n{sentiment.get('Sentiment')}")
 
 # Detect entities
 entities =  comprehend.detect_entities(LanguageCode="en", Text=text)
 print("\nEntities\n========")
 for entity in entities["Entities"]:
-    print ("{}\t=>\t{}".format(entity["Type"], entity["Text"]))
+    print(f'{entity["Type"]}\t=>\t{entity["Text"]}')

@@ -18,37 +18,30 @@ def is_job_complete(client, job_id):
     time.sleep(1)
     response = client.get_document_text_detection(JobId=job_id)
     status = response["JobStatus"]
-    print("Job status: {}".format(status))
+    print(f"Job status: {status}")
 
-    while(status == "IN_PROGRESS"):
+    while (status == "IN_PROGRESS"):
         time.sleep(1)
         response = client.get_document_text_detection(JobId=job_id)
         status = response["JobStatus"]
-        print("Job status: {}".format(status))
+        print(f"Job status: {status}")
 
     return status
 
 
 def get_job_results(client, job_id):
-    pages = []
     time.sleep(1)
     response = client.get_document_text_detection(JobId=job_id)
-    pages.append(response)
-    print("Resultset page received: {}".format(len(pages)))
-    next_token = None
-    if 'NextToken' in response:
-        next_token = response['NextToken']
-
+    pages = [response]
+    print(f"Resultset page received: {len(pages)}")
+    next_token = response['NextToken'] if 'NextToken' in response else None
     while next_token:
         time.sleep(1)
         response = client.\
             get_document_text_detection(JobId=job_id, NextToken=next_token)
         pages.append(response)
-        print("Resultset page received: {}".format(len(pages)))
-        next_token = None
-        if 'NextToken' in response:
-            next_token = response['NextToken']
-
+        print(f"Resultset page received: {len(pages)}")
+        next_token = response['NextToken'] if 'NextToken' in response else None
     return pages
 
 
@@ -60,7 +53,7 @@ if __name__ == "__main__":
     client = boto3.client('textract', region_name=region)
 
     job_id = start_job(client, s3_bucket_name, document_name)
-    print("Started job with id: {}".format(job_id))
+    print(f"Started job with id: {job_id}")
     if is_job_complete(client, job_id):
         response = get_job_results(client, job_id)
 

@@ -25,13 +25,13 @@ img = Image.open(documentName)
 
 width, height = img.size
 
-if(doc.pages):
+if doc.pages:
     page = doc.pages[0]
     for field in page.form.fields:
-        if(field.key and field.value and "address" in field.key.text.lower()):
+        if (field.key and field.value and "address" in field.key.text.lower()):
         #if(field.key and field.value):
-            print("Redacting => Key: {}, Value: {}".format(field.key.text, field.value.text))
-            
+            print(f"Redacting => Key: {field.key.text}, Value: {field.value.text}")
+
             x1 = field.value.geometry.boundingBox.left*width
             y1 = field.value.geometry.boundingBox.top*height-2
             x2 = x1 + (field.value.geometry.boundingBox.width*width)+5
@@ -40,4 +40,4 @@ if(doc.pages):
             draw = ImageDraw.Draw(img)
             draw.rectangle([x1, y1, x2, y2], fill="Black")
 
-img.save("redacted-{}".format(documentName))
+img.save(f"redacted-{documentName}")

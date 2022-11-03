@@ -23,18 +23,17 @@ for page in doc.pages:
     # Print fields
     print("Fields:")
     for field in page.form.fields:
-        print("Key: {}, Value: {}".format(field.key, field.value))
+        print(f"Key: {field.key}, Value: {field.value}")
 
     # Get field by key
     print("\nGet Field by Key:")
     key = "Phone Number:"
-    field = page.form.getFieldByKey(key)
-    if(field):
-        print("Key: {}, Value: {}".format(field.key, field.value))
+    if field := page.form.getFieldByKey(key):
+        print(f"Key: {field.key}, Value: {field.value}")
 
     # Search fields by key
     print("\nSearch Fields:")
     key = "address"
     fields = page.form.searchFieldsByKey(key)
     for field in fields:
-        print("Key: {}, Value: {}".format(field.key, field.value))
+        print(f"Key: {field.key}, Value: {field.value}")

@@ -24,4 +24,4 @@ for page in doc.pages:
     for table in page.tables:
         for r, row in enumerate(table.rows):
             for c, cell in enumerate(row.cells):
-                print("Table[{}][{}] = {}".format(r, c, cell.text))
+                print(f"Table[{r}][{c}] = {cell.text}")

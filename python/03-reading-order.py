@@ -20,12 +20,12 @@ with open(documentName, "rb") as document:
 columns = []
 lines = []
 for item in response["Blocks"]:
-      if item["BlockType"] == "LINE":
+    if item["BlockType"] == "LINE":
         column_found=False
+        bbox_left = item["Geometry"]["BoundingBox"]["Left"]
+        bbox_right = item["Geometry"]["BoundingBox"]["Left"] + item["Geometry"]["BoundingBox"]["Width"]
+        bbox_centre = item["Geometry"]["BoundingBox"]["Left"] + item["Geometry"]["BoundingBox"]["Width"]/2
         for index, column in enumerate(columns):
-            bbox_left = item["Geometry"]["BoundingBox"]["Left"]
-            bbox_right = item["Geometry"]["BoundingBox"]["Left"] + item["Geometry"]["BoundingBox"]["Width"]
-            bbox_centre = item["Geometry"]["BoundingBox"]["Left"] + item["Geometry"]["BoundingBox"]["Width"]/2
             column_centre = column['left'] + column['right']/2
 
             if (bbox_centre > column['left'] and bbox_centre < column['right']) or (column_centre > bbox_left and column_centre < bbox_right):

@@ -33,12 +33,12 @@ for page in doc.pages:
         for r, row in enumerate(table.rows):
             itemName  = ""
             for c, cell in enumerate(row.cells):
-                print("Table[{}][{}] = {}".format(r, c, cell.text))
-                if(c == 0):
+                print(f"Table[{r}][{c}] = {cell.text}")
+                if (c == 0):
                     itemName = cell.text
-                elif(c == 4 and isFloat(cell.text)):
+                elif (c == 4 and isFloat(cell.text)):
                     value = float(cell.text)
-                    if(value > 1000):
-                        warning += "{} is greater than $1000.".format(itemName)
+                    if (value > 1000):
+                        warning += f"{itemName} is greater than $1000."
 if(warning):
     print("\nReview needed:\n====================\n" + warning)

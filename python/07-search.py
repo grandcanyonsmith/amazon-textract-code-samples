@@ -4,12 +4,9 @@ from requests_aws4auth import AWS4Auth
 
 def indexDocument(bucketName, objectName, text):
 
-    # Update host with endpoint of your Elasticsearch cluster
-    #host = "search--xxxxxxxxxxxxxx.us-east-1.es.amazonaws.com
-    host = "searchxxxxxxxxxxxxxxxx.us-east-1.es.amazonaws.com"
     region = 'us-east-1'
 
-    if(text):
+    if text:
         service = 'es'
         ss = boto3.Session()
         credentials = ss.get_credentials()
@@ -17,6 +14,9 @@ def indexDocument(bucketName, objectName, text):
 
         awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
+        # Update host with endpoint of your Elasticsearch cluster
+        #host = "search--xxxxxxxxxxxxxx.us-east-1.es.amazonaws.com
+        host = "searchxxxxxxxxxxxxxxxx.us-east-1.es.amazonaws.com"
         es = Elasticsearch(
             hosts = [{'host': host, 'port': 443}],
             http_auth = awsauth,
@@ -26,14 +26,15 @@ def indexDocument(bucketName, objectName, text):
         )
 
         document = {
-            "name": "{}".format(objectName),
-            "bucket" : "{}".format(bucketName),
-            "content" : text
+            "name": f"{objectName}",
+            "bucket": f"{bucketName}",
+            "content": text,
         }
+
 
         es.index(index="textract", doc_type="document", id=objectName, body=document)
 
-        print("Indexed document: {}".format(objectName))
+        print(f"Indexed document: {objectName}")
 
 # Document
 s3BucketName = "ki-textract-demo-docs"
